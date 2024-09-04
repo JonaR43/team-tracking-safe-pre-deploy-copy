@@ -1,5 +1,5 @@
 // services/playerService.js
-const API_URL = import.meta.env.VITE_API_URL;
+export const API_URL = import.meta.env.VITE_API_URL || "/";
 
 export const fetchPlayerById = async (id) => {
     const response = await fetch(`${API_URL}/players/${id}`);

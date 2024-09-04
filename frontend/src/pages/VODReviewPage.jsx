@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Input, Select, Text, Flex, Alert, AlertIcon, Textarea, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 
-const VODReviewPage = ({userRole}) => {
+const VODReviewPage = ({ userRole }) => {
   const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/embed/default'); // Default video URL
   const [directUrl, setDirectUrl] = useState('');
   const [notes, setNotes] = useState('');
@@ -18,17 +18,17 @@ const VODReviewPage = ({userRole}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const schedulesResponse = await fetch('http://127.0.0.1:5000/schedules');
+        const schedulesResponse = await fetch(`${import.meta.env.VITE_API_URL}/schedules`);
         if (!schedulesResponse.ok) throw new Error(`HTTP error! status: ${schedulesResponse.status}`);
         const schedulesData = await schedulesResponse.json();
         setSchedules(schedulesData);
 
-        const matchesResponse = await fetch('http://127.0.0.1:5000/matches');
+        const matchesResponse = await fetch(`${import.meta.env.VITE_API_URL}/matches`);
         if (!matchesResponse.ok) throw new Error(`HTTP error! status: ${matchesResponse.status}`);
         const matchesData = await matchesResponse.json();
         setMatches(matchesData);
 
-        const videoLinksResponse = await fetch('http://127.0.0.1:5000/api/video-links');
+        const videoLinksResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/video-links`);
         if (!videoLinksResponse.ok) throw new Error(`HTTP error! status: ${videoLinksResponse.status}`);
         const videoLinksData = await videoLinksResponse.json();
         setVideoLinks(videoLinksData);
@@ -56,7 +56,7 @@ const VODReviewPage = ({userRole}) => {
       // Fetch player stats for the selected match
       const fetchPlayerStats = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:5000/matches/${match}/player_stats`);
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/matches/${match}/player_stats`);
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           const data = await response.json();
           setPlayerStats(data);
@@ -99,7 +99,7 @@ const VODReviewPage = ({userRole}) => {
         notes: notes,
       };
 
-      const saveResponse = await fetch('http://127.0.0.1:5000/api/save-video', {
+      const saveResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/save-video`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(videoLinkData),
@@ -126,7 +126,7 @@ const VODReviewPage = ({userRole}) => {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/matches/${match}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/matches/${match}`);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
       if (data.video_url) {
@@ -141,7 +141,7 @@ const VODReviewPage = ({userRole}) => {
 
   const handleDeleteVideoLink = async (linkId) => {
     try {
-      const deleteResponse = await fetch(`http://127.0.0.1:5000/api/video-links/${linkId}`, {
+      const deleteResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/video-links/${linkId}`, {
         method: 'DELETE',
       });
 
@@ -198,9 +198,9 @@ const VODReviewPage = ({userRole}) => {
           <Flex mb={4}>
             <Button onClick={handleLoadVideo} mr={4}>Load Video</Button>
             { (userRole === "admin" || userRole === "master_admin") && (
-            <Button colorScheme="red" onClick={() => handleDeleteVideoLink(videoLinks.find(link => link.match_id === selectedMatch?.id)?.id)}>
-              Delete Video Link and Notes
-            </Button>
+              <Button colorScheme="red" onClick={() => handleDeleteVideoLink(videoLinks.find(link => link.match_id === selectedMatch?.id)?.id)}>
+                Delete Video Link and Notes
+              </Button>
             )}
           </Flex>
 
@@ -222,8 +222,6 @@ const VODReviewPage = ({userRole}) => {
         </Box>
       </Flex>
 
-      {/* Removed additional dropdowns */}
-      
       {/* Preview section for selected schedule and match */}
       <Box w="100%" mt={4}>
         {schedule && (
@@ -310,6 +308,7 @@ const VODReviewPage = ({userRole}) => {
 };
 
 export default VODReviewPage;
+
 
 
 

@@ -13,7 +13,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://127.0.0.1:5000/register', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,9 +49,9 @@ const Register = () => {
   return (
     <Box p={4}>
       <Stack spacing={4} maxWidth="400px" mx="auto">
-      <Heading size="lg" as="span" bgGradient="linear(to-r, cyan.400, blue.500)" bgClip="text">
-                      Register
-                    </Heading>
+        <Heading size="lg" as="span" bgGradient="linear(to-r, cyan.400, blue.500)" bgClip="text">
+          Register
+        </Heading>
         <Input
           placeholder="Username"
           value={username}
@@ -71,6 +71,7 @@ const Register = () => {
 };
 
 export default Register;
+
 
 
 

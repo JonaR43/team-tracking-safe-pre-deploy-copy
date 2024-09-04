@@ -34,12 +34,9 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
 
   useEffect(() => {
     if (match) {
-      console.log('Match:', match); // Debugging log
       setGameMode(match.game_mode);
     }
   }, [match]);
-
-  console.log('Current Game Mode:', gameMode); // Debugging log
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +55,7 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/create_player_match_stats', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/create_player_match_stats`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,8 +79,8 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
         throw new Error('Failed to update stats');
       }
       const updatedStats = await response.json();
-      console.log('Stats updated:', updatedStats); // Debugging log
-      onClose(); // Close the modal after successful update
+      console.log('Stats updated:', updatedStats);
+      onClose();
     } catch (error) {
       console.error('Error updating stats:', error);
     }
@@ -106,7 +103,7 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
               >
                 {players.map((player) => (
                   <option key={player.id} value={player.id}>
-                    {player.name} {/* Adjust based on player properties */}
+                    {player.name}
                   </option>
                 ))}
               </Select>
@@ -227,6 +224,7 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
 };
 
 export default MatchPlayerStats;
+
 
 
 

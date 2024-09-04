@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('http://127.0.0.1:5000/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,14 +56,12 @@ const Login = () => {
     }
   };
 
-  
-
   return (
     <Box p={4}>
       <Stack spacing={4} maxWidth="400px" mx="auto">
-      <Heading size="lg" as="span" bgGradient="linear(to-r, cyan.400, blue.500)" bgClip="text">
-                      Login
-                    </Heading>
+        <Heading size="lg" as="span" bgGradient="linear(to-r, cyan.400, blue.500)" bgClip="text">
+          Login
+        </Heading>
         <Input
           placeholder="Username"
           value={username}
@@ -84,6 +82,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
