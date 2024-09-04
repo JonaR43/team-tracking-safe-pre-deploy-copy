@@ -17,7 +17,7 @@ const ScheduleMatchesModal = ({ isOpen, onClose, scheduleId }) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://127.0.0.1:5000/schedule/${scheduleId}/matches`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/schedule/${scheduleId}/matches`);
         if (!response.ok) {
           throw new Error('Failed to fetch matches');
         }
