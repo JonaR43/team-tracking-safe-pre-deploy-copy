@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
 from werkzeug.security import generate_password_hash
+import routes
 
 
 app = Flask(__name__)
@@ -22,8 +23,6 @@ def index(filename):
   return send_from_directory(frontend_folder,filename)
 
 from models import User  # Add this line to import the User model
-import routes
-
 #api routes for CRUDz
 with app.app_context():
     db.create_all()
