@@ -1,0 +1,32 @@
+src/
+├── components/        # For reusable components
+│   ├── Navbar.jsx
+│   ├── TeamTable.jsx
+│   ├── PlayerStatsTable.jsx
+│   ├── modals/        # For modal components
+│   │   ├── CreatePlayerModal.jsx
+│   │   ├── CreateMatchModal.jsx
+│   │   └── CreateSchedule.jsx
+│   ├── sections/      # For components that represent sections of a page
+│   │   ├── ScheduleSection.jsx
+│   │   └── MatchesSection.jsx
+│   └── admin/         # For admin-related components
+│       ├── AdminDashboard.jsx
+│       └── VODReviewPage.jsx
+├── contexts/          # For context providers (e.g., AuthContext)
+├── hooks/             # For custom hooks
+├── pages/             # For full-page components
+│   ├── Login.jsx
+│   ├── Register.jsx
+│   ├── Dashboard.jsx
+│   └── NotFound.jsx   # For a 404 Not Found page
+├── routes/            # For route-related components
+│   └── PrivateRoute.jsx
+├── services/          # For API services and utilities
+│   ├── api.js         # For API functions (e.g., fetchPlayerById, deleteMatchById)
+│   ├── playerService.js
+│   └── scheduleService.js
+├── utils/             # For utility functions
+│   └── formatDate.js
+├── App.jsx            # Main App component
+└── main.jsx           # Entry point
