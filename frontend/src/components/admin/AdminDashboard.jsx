@@ -18,12 +18,14 @@ const AdminDashboard = () => {
   const [teamName, setTeamName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const API_URL = import.meta.env.VITE_API_URL || "/";
+
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await fetch('http://127.0.0.1:5000/admin/users', {
+          const response = await fetch(`${API_URL}/admin/users`, {
             headers: {
               'Authorization': `Bearer ${token}`,
             },
@@ -43,7 +45,7 @@ const AdminDashboard = () => {
 
     const fetchTeams = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/teams');
+        const response = await fetch(`${API_URL}/teams`);
         if (response.ok) {
           const data = await response.json();
           setTeams(data);
@@ -57,14 +59,14 @@ const AdminDashboard = () => {
 
     fetchUsers();
     fetchTeams();
-  }, []);
+  }, [API_URL]);
 
   const handleResetPassword = async (username) => {
     const newPassword = prompt('Enter new password');
     if (newPassword) {
       const token = localStorage.getItem('token');
       try {
-        const response = await fetch('http://127.0.0.1:5000/admin/reset_password', {
+        const response = await fetch(`${API_URL}/admin/reset_password`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -88,7 +90,7 @@ const AdminDashboard = () => {
     if (confirmDelete) {
       const token = localStorage.getItem('token');
       try {
-        const response = await fetch('http://127.0.0.1:5000/admin/delete_user', {
+        const response = await fetch(`${API_URL}/admin/delete_user`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -111,7 +113,7 @@ const AdminDashboard = () => {
   const handleMakeAdmin = async (username) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://127.0.0.1:5000/admin/mark_as_admin', {
+      const response = await fetch(`${API_URL}/admin/mark_as_admin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +135,7 @@ const AdminDashboard = () => {
   const handleMakeUser = async (username) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://127.0.0.1:5000/admin/mark_as_user', {
+      const response = await fetch(`${API_URL}/admin/mark_as_user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +157,7 @@ const AdminDashboard = () => {
   const handleCreateTeam = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://127.0.0.1:5000/create_team', {
+      const response = await fetch(`${API_URL}/create_team`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -180,7 +182,7 @@ const AdminDashboard = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete team ${id}?`);
     if (confirmDelete) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/delete_team/${id}`, {
+        const response = await fetch(`${API_URL}/delete_team/${id}`, {
           method: 'DELETE',
         });
         if (response.ok) {
