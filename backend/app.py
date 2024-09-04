@@ -13,13 +13,14 @@ db = SQLAlchemy(app)
 
 frontend_folder = os.path.join(os.getcwd(), "..", "frontend", "dist")
 
-# Serve static files from the "dist" folder
-@app.route('/<path:path>', methods=['GET'])
-def serve_static(path):
-    if os.path.isfile(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
+@app.route("/", defaults={"filename": "index.html"})
+@app.route("/<path:filename>")
+def index(filename):
+    # Serve the requested file if it exists; otherwise, serve index.html
+    if filename and os.path.exists(os.path.join(frontend_folder, filename)):
+        return send_from_directory(frontend_folder, filename)
+    return send_from_directory(frontend_folder, "index.html")
+
 
 # Import routes here to avoid circular imports
 from routes import *
