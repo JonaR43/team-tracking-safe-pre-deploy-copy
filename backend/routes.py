@@ -473,8 +473,8 @@ def create_match():
         db.session.rollback()
         return jsonify({"Error": str(e)}), 500
 
-@app.route("/create_player_match_stats", methods=["POST"])
-def create_match_stats():
+@app.route("/create_or_update_player_match_stats", methods=["POST"])
+def create_or_update_match_stats():
     try:
         data = request.json
 
@@ -484,22 +484,43 @@ def create_match_stats():
             if field not in data or not data.get(field):
                 return jsonify({"error": f"Missing required field: {field}"}), 401
 
-        # Create MatchPlayerStats object with general stats and game mode-specific stats
-        match_stats = MatchPlayerStats(
+        # Check if the match stats for this player and match already exist
+        existing_stats = MatchPlayerStats.query.filter_by(
             match_id=data.get("match_id"),
-            player_id=data.get("player_id"),
-            kills=data.get("kills", 0),
-            deaths=data.get("deaths", 0),
-            assists=data.get("assists", 0),
-            damage_output=data.get("damage_output", 0),
-            objective_time=data.get("objective_time", 0),
-            plants=data.get("plants", 0),
-            defuses=data.get("defuses", 0),
-            first_blood=data.get("first_blood", 0),
-            first_death=data.get("first_death", 0),
-            captures=data.get("captures", 0)
-        )
-        db.session.add(match_stats)
+            player_id=data.get("player_id")
+        ).first()
+
+        if existing_stats:
+            # Update the existing stats
+            existing_stats.kills = data.get("kills", existing_stats.kills)
+            existing_stats.deaths = data.get("deaths", existing_stats.deaths)
+            existing_stats.assists = data.get("assists", existing_stats.assists)
+            existing_stats.damage_output = data.get("damage_output", existing_stats.damage_output)
+            existing_stats.objective_time = data.get("objective_time", existing_stats.objective_time)
+            existing_stats.plants = data.get("plants", existing_stats.plants)
+            existing_stats.defuses = data.get("defuses", existing_stats.defuses)
+            existing_stats.first_blood = data.get("first_blood", existing_stats.first_blood)
+            existing_stats.first_death = data.get("first_death", existing_stats.first_death)
+            existing_stats.captures = data.get("captures", existing_stats.captures)
+        else:
+            # Create a new MatchPlayerStats object
+            match_stats = MatchPlayerStats(
+                match_id=data.get("match_id"),
+                player_id=data.get("player_id"),
+                kills=data.get("kills", 0),
+                deaths=data.get("deaths", 0),
+                assists=data.get("assists", 0),
+                damage_output=data.get("damage_output", 0),
+                objective_time=data.get("objective_time", 0),
+                plants=data.get("plants", 0),
+                defuses=data.get("defuses", 0),
+                first_blood=data.get("first_blood", 0),
+                first_death=data.get("first_death", 0),
+                captures=data.get("captures", 0)
+            )
+            db.session.add(match_stats)
+
+        # Commit the changes (either update or new insert)
         db.session.commit()
 
         # Update player's overall stats
@@ -507,10 +528,11 @@ def create_match_stats():
         if player:
             player.update_stats()
 
-        return jsonify(match_stats.to_json()), 201
+        return jsonify({"message": "Player match stats updated successfully"}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 
     
 @app.route("/update_match/<int:id>", methods=["PUT"])

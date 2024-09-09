@@ -55,7 +55,7 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/create_player_match_stats`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/create_or_update_player_match_stats`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,6 +85,7 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
       console.error('Error updating stats:', error);
     }
   };
+  
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
