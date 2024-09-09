@@ -25,6 +25,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import VODReviewPage from './pages/VODReviewPage';
 import NotFound from "./pages/NotFound";
+import Footer from "./components/sections/Footer";
+import PricingPage from "./pages/Pricing";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 import {
   fetchPlayerById,
   fetchPlayers,
@@ -138,9 +142,9 @@ function App() {
   return (
     <ChakraProvider>
       <Router>
-        <Stack minH="100vh">
+        <Stack minH="100vh" direction="column">
           <Navbar userRole={userRole}/>
-          <Container maxW="1900px" my={4}>
+          <Container maxW="1900px" my={4} flex={1}>
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -172,9 +176,13 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/not-found" element={<NotFound />}/>
             </Routes>
           </Container>
+          <Footer />
         </Stack>
       </Router>
     </ChakraProvider>
