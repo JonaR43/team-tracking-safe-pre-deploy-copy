@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
     <Container maxW="container.md" py={8}>
       <Heading as="h1" mb={4}>Privacy Policy</Heading>
       <Text mb={4}>
-        At [Your Company Name], accessible from [Your Website URL], one of our main priorities is the privacy of our visitors. This Privacy Policy explains how we handle information about you.
+        At J.customs, accessible from [Your Website URL], one of our main priorities is the privacy of our visitors. This Privacy Policy explains how we handle information about you.
       </Text>
       <Heading as="h2" size="lg" mt={6} mb={4}>1. Information We Do Not Collect</Heading>
       <Text mb={4}>
@@ -27,7 +27,7 @@ const PrivacyPolicy = () => {
       </Text>
       <Heading as="h2" size="lg" mt={6} mb={4}>5. Contact Us</Heading>
       <Text mb={4}>
-        If you have any questions about this Privacy Policy, please contact us at [Your Contact Information].
+        If you have any questions about this Privacy Policy, please contact us at J.customs6@gmail.com.
       </Text>
     </Container>
   );

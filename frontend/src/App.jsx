@@ -29,6 +29,7 @@ import Footer from "./components/sections/Footer";
 import PricingPage from "./pages/Pricing";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import AboutUsPage from "./pages/AboutUs";
 import {
   fetchPlayerById,
   fetchPlayers,
@@ -179,6 +180,7 @@ function App() {
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/about-us" element={<AboutUsPage />} />
               <Route path="/not-found" element={<NotFound />}/>
             </Routes>
           </Container>

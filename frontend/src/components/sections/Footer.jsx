@@ -1,4 +1,3 @@
-// Footer.js
 import React, { useState } from 'react';
 import {
   Box,
@@ -9,7 +8,6 @@ import {
   Input,
   Textarea,
   Button,
-  useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
 
@@ -27,13 +25,12 @@ const Footer = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // Replace this URL with your Google Form URL
-      const response = await fetch('YOUR_GOOGLE_FORM_URL', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbz_7ppiTQFRzDjMuuXFDxLrbcZvOjbQEUzgwvHw9QQCpQmrSyr32XOItewbFb4rko91/exec', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData).toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         setMessage('Thank you for your submission!');
         setFormData({ name: '', email: '', question: '' });
@@ -47,7 +44,9 @@ const Footer = () => {
       setIsSubmitting(false);
     }
   };
-
+  
+  
+  
   return (
     <Box as="footer" bg={useColorModeValue("gray.800", "gray.900")} color="white" py={4} mt={8}>
       <Container maxW="container.xl">
@@ -62,8 +61,6 @@ const Footer = () => {
             <Flex direction="column" gap={2}>
               <a href="/about-us"><Text>About Us</Text></a>
               <a href="/pricing"><Text>Pricing</Text></a>
-              <a href="/mission"><Text>Mission Statement</Text></a>
-              {/* Removed Careers */}
               <a href="/contact"><Text>Contact</Text></a>
               <a href="/terms-and-conditions"><Text>Terms and Conditions</Text></a>
               <a href="/privacy-policy"><Text>Privacy Policy</Text></a>
@@ -112,6 +109,7 @@ const Footer = () => {
 };
 
 export default Footer;
+
 
 
 
