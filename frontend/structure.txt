@@ -30,3 +30,16 @@ src/
 │   └── formatDate.js
 ├── App.jsx            # Main App component
 └── main.jsx           # Entry point
+
+
+-------------------------------------------------------------------------------------------
+Steps to set up git connection on a new system
+1. git init 
+2. git remote add origin https://github.com/JonaR43/team-tracking-safe-pre-deploy-copy.git
+3. git checkout -b new-branch-name
+4. git add .
+5. git commit -m "Test commit"
+
+Make sure to connect all credentials in git config in order to commit, there will be warnings when commiting, ignore them its because some of these files are written on a linux system and part of the
+repository is also comprised of files that come from windows machines, it's just conversions from git
+-------------------------------------------------------------------------------------------
