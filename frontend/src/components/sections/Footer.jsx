@@ -30,8 +30,9 @@ const Footer = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-  
-      if (response.ok) {
+      
+      const result = await response.json();
+      if (result.result === 'success') {
         setMessage('Thank you for your submission!');
         setFormData({ name: '', email: '', question: '' });
       } else {
@@ -45,8 +46,7 @@ const Footer = () => {
     }
   };
   
-  
-  
+
   return (
     <Box as="footer" bg={useColorModeValue("gray.800", "gray.900")} color="white" py={4} mt={8}>
       <Container maxW="container.xl">
