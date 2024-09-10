@@ -30,6 +30,7 @@ import PricingPage from "./pages/Pricing";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import AboutUsPage from "./pages/AboutUs";
+import Contact from "./pages/Contact";
 import {
   fetchPlayerById,
   fetchPlayers,
@@ -181,6 +182,7 @@ function App() {
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/about-us" element={<AboutUsPage />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/not-found" element={<NotFound />}/>
             </Routes>
           </Container>
