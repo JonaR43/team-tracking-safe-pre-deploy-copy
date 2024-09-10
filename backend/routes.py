@@ -680,6 +680,29 @@ def delete_match_stats(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"Error": str(e)}), 500
+    
+@app.route("/delete_match_stats/<int:match_id>/player/<int:player_id>", methods=["DELETE"])
+def delete_match_stats_for_player(match_id, player_id):
+    try:
+        # Fetch the match stats by match_id and player_id
+        match_stats = MatchPlayerStats.query.filter_by(match_id=match_id, player_id=player_id).first()
+        if not match_stats:
+            return jsonify({"Error": "Match stats not found for this player"}), 404
+
+        # Delete the match stats
+        db.session.delete(match_stats)
+        db.session.commit()
+
+        # Optionally, update player's overall stats
+        player = Player.query.get(player_id)
+        if player:
+            player.update_stats()
+
+        return jsonify({"message": "Match stats for the player deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"Error": str(e)}), 500
+
 
 @app.route("/delete_match/<int:id>", methods=["DELETE"])
 def delete_match(id):

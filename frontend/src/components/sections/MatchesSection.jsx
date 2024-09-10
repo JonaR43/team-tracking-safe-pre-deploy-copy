@@ -17,6 +17,8 @@ import {
 import { FaTrash, FaEdit, FaUserEdit } from 'react-icons/fa';
 import MatchStatsModal from '../modals/MatchStatsModal';
 import MatchPlayerStats from '../MatchPlayerStats';
+import { fetchMatches, deleteMatch, fetchMatchDetails } from '../../services/matchService';
+import { fetchPlayers } from '../../services/playerService';
 
 const MatchesSection = ({ apiUrl, userRole }) => {
   const [matches, setMatches] = useState([]);
@@ -29,52 +31,28 @@ const MatchesSection = ({ apiUrl, userRole }) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchMatches = async () => {
+    const loadMatchesAndPlayers = async () => {
       setLoading(true);
       setError('');
       try {
-        const response = await fetch(`${apiUrl}/matches`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch matches');
-        }
-        const data = await response.json();
-        setMatches(data);
+        const matchData = await fetchMatches(apiUrl);
+        const playerData = await fetchPlayers(apiUrl);
+        setMatches(matchData);
+        setPlayers(playerData);
       } catch (error) {
-        setError('Error fetching matches: ' + error.message);
+        setError('Error loading data: ' + error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchPlayers = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const response = await fetch(`${apiUrl}/players`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch players');
-        }
-        const data = await response.json();
-        setPlayers(data);
-      } catch (error) {
-        setError('Error fetching players: ' + error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMatches();
-    fetchPlayers();
+    loadMatchesAndPlayers();
   }, [apiUrl]);
 
   const handleShowStats = async (matchId) => {
     try {
-      const response = await fetch(`${apiUrl}/match/${matchId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch match details');
-      }
-      const data = await response.json();
-      setSelectedMatch(data);
+      const matchData = await fetchMatchDetails(apiUrl, matchId);
+      setSelectedMatch(matchData);
       setIsMatchStatsModalOpen(true);
     } catch (error) {
       setError('Error fetching match details: ' + error.message);
@@ -94,12 +72,7 @@ const MatchesSection = ({ apiUrl, userRole }) => {
   const handleDeleteMatch = async (matchId) => {
     if (window.confirm('Are you sure you want to delete this match?')) {
       try {
-        const response = await fetch(`${apiUrl}/delete_match/${matchId}`, {
-          method: 'DELETE',
-        });
-        if (!response.ok) {
-          throw new Error('Failed to delete match');
-        }
+        await deleteMatch(matchId);
         setMatches(matches.filter((match) => match.id !== matchId));
       } catch (error) {
         setError('Error deleting match: ' + error.message);

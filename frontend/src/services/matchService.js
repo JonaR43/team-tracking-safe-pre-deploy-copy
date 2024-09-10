@@ -1,10 +1,13 @@
 // services/matchService.js
 export const API_URL = import.meta.env.VITE_API_URL || "/";
 
-export const fetchMatches = async () => {
-    const response = await fetch(`${API_URL}/matches`);
-    return response.json();
-  };
+export const fetchMatches = async (apiUrl) => {
+  const response = await fetch(`${apiUrl}/matches`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch matches');
+  }
+  return await response.json();
+};
   
   export const createMatch = async (matchData) => {
     const response = await fetch(`${API_URL}/create_match`, {
@@ -30,8 +33,14 @@ export const fetchMatches = async () => {
     });
   };
   
-  export const deleteMatch = async (id) => {
-    await fetch(`${API_URL}/matches/${id}`, { method: 'DELETE' });
+  export const deleteMatch = async (apiUrl, matchId) => {
+    const response = await fetch(`${apiUrl}/delete_match/${matchId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete match');
+    }
+    return response;
   };
   
 export const deleteMatchById = async (id) => {
@@ -51,4 +60,12 @@ export const deleteMatchById = async (id) => {
   } catch (error) {
     console.error("Error deleting match:", error);
   }
+};
+
+export const fetchMatchDetails = async (apiUrl, matchId) => {
+  const response = await fetch(`${apiUrl}/match/${matchId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch match details');
+  }
+  return await response.json();
 };

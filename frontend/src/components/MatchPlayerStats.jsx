@@ -14,6 +14,7 @@ import {
   FormLabel,
   FormControl,
 } from '@chakra-ui/react';
+import { createOrUpdatePlayerMatchStats } from '../services/playerMatchStatsService';
 
 const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
   const [stats, setStats] = useState({
@@ -55,36 +56,17 @@ const MatchPlayerStats = ({ isOpen, onClose, match, players }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/create_or_update_player_match_stats`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          match_id: match.id,
-          player_id: stats.player_id,
-          kills: stats.kills,
-          deaths: stats.deaths,
-          assists: stats.assists,
-          damage_output: stats.damage_output,
-          objective_time: stats.objective_time,
-          plants: stats.plants,
-          defuses: stats.defuses,
-          first_blood: stats.first_blood,
-          first_death: stats.first_death,
-          captures: stats.captures,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to update stats');
-      }
-      const updatedStats = await response.json();
+      const updatedStats = await createOrUpdatePlayerMatchStats(
+        match.id,
+        stats
+      );
       console.log('Stats updated:', updatedStats);
-      onClose();
+      onClose();  // Close the modal or perform any necessary UI updates
     } catch (error) {
       console.error('Error updating stats:', error);
     }
   };
+  
   
 
   return (

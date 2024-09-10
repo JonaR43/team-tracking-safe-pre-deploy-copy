@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Stack, Heading, Flex, Button, Select } from "@chakra-ui/react";
+import {
+  Stack,
+  Heading,
+  Flex,
+  Button,
+  Select
+} from "@chakra-ui/react";
 import TeamTable from "../components/tables/TeamTable";
 import PlayerStatsTable from "../components/tables/PlayerStatsTable";
 import ScheduleSection from "../components/sections/ScheduleSection";
@@ -8,19 +14,18 @@ import CreatePlayerModal from "../components/modals/CreatePlayerModal";
 import CreateSchedule from "../components/modals/CreateSchedule";
 import CreateMatchModal from "../components/modals/CreateMatchModal";
 import { createMatch } from '../services/matchService'; // Import the service function
+import { fetchPlayerById } from '../services/playerService'; // Import the service function
 
 function Dashboard({
   players,
-  selectedPlayer,
   isLoading,
   userRole,
   schedules,
-  handleDeleteMatch,
   handleDeleteSchedule,
   updatePlayerList,
-  handlePlayerChange,
   API_URL,
 }) {
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [showCreateMatchModal, setShowCreateMatchModal] = useState(false);
 
   const handleCreateMatch = async (formData) => {
@@ -28,7 +33,6 @@ function Dashboard({
       await createMatch(formData); // Call the service function 
       console.log("Match created successfully");
       setShowCreateMatchModal(false);
-      // Optionally, you can refresh the match or schedule list here
     } catch (error) {
       console.error("Error creating match:", error);
     }
@@ -99,7 +103,20 @@ function Dashboard({
         </Heading>
         <Select
           placeholder="Select a player"
-          onChange={handlePlayerChange}
+          onChange={async (e) => {
+            const playerId = e.target.value;
+            if (playerId) {
+              try {
+                const player = await fetchPlayerById(playerId);
+                console.log("Fetched player data:", player);
+                setSelectedPlayer(player);
+              } catch (error) {
+                console.error("Error fetching player:", error);
+              }
+            } else {
+              setSelectedPlayer(null);
+            }
+          }}
         >
           {players.map((player) => (
             <option key={player.id} value={player.id}>
@@ -111,22 +128,26 @@ function Dashboard({
           <PlayerStatsTable
             playerData={selectedPlayer.player}
             matchStats={selectedPlayer.match_stats}
-            deleteMatch={handleDeleteMatch}
             userRole={userRole}
+            selectedPlayer={selectedPlayer}
+            setSelectedPlayer={setSelectedPlayer}
           />
         )}
       </Stack>
-      {/* Create Match Modal */}
       <CreateMatchModal
         isOpen={showCreateMatchModal}
         onClose={() => setShowCreateMatchModal(false)}
-        handleSubmit={handleCreateMatch}
+        onCreateMatch={handleCreateMatch}
       />
     </Stack>
   );
 }
 
 export default Dashboard;
+
+
+
+
 
 
 

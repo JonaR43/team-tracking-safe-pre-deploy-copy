@@ -51,3 +51,21 @@ export const fetchPlayers = async () => {
     return response.json();
   };
   
+  export const deleteMatchStatsByPlayerId = async (matchId, playerId) => {
+    try {
+      const response = await fetch(`${API_URL}/delete_match_stats/${matchId}/player/${playerId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to delete match stats");
+      }
+  
+      console.log("Match stats deleted successfully");
+    } catch (error) {
+      console.error("Error deleting match stats:", error);
+    }
+  };

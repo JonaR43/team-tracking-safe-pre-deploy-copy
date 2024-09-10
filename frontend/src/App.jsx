@@ -97,21 +97,6 @@ function App() {
   }, []);
   
 
-  const handlePlayerChange = async (event) => {
-    const playerId = event.target.value;
-    if (playerId) {
-      try {
-        const player = await fetchPlayerById(playerId);
-        console.log("Fetched player data:", player);
-        setSelectedPlayer(player);
-      } catch (error) {
-        console.error("Error fetching player:", error);
-      }
-    } else {
-      setSelectedPlayer(null);
-    }
-  };
-
   const handleDeleteMatch = async (matchId) => {
     try {
       await deleteMatchById(matchId);
@@ -165,14 +150,11 @@ function App() {
                   <PrivateRoute allowedRoles={["user", "admin", "master_admin"]}>
                     <Dashboard
                       players={players}
-                      selectedPlayer={selectedPlayer}
                       isLoading={isLoading}
                       userRole={userRole}
                       schedules={schedules}
-                      handleDeleteMatch={handleDeleteMatch}
                       handleDeleteSchedule={handleDeleteSchedule}
                       updatePlayerList={updatePlayerList}
-                      handlePlayerChange={handlePlayerChange}
                       API_URL={API_URL}
                     />
                   </PrivateRoute>

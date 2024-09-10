@@ -1,20 +1,40 @@
 import React from 'react';
 import { Box, Button, Table, Thead, Tbody, Tr, Th, Td, TableContainer, useColorModeValue } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { deleteMatchStatsByPlayerId, fetchPlayerById } from '../../services/playerService';
 
-const PlayerStatsTable = ({ playerData, matchStats, deleteMatch, userRole }) => {
+const PlayerStatsTable = ({ playerData, matchStats, userRole, selectedPlayer, setSelectedPlayer }) => {
+  // Hooks should be called unconditionally
   const headerBgColor = useColorModeValue('gray.200', 'gray.600');
   const tableBgColor = useColorModeValue('white', 'gray.800');
 
+  const handleDeleteMatchStats = async (matchId, playerId) => {
+    try {
+      // Call the new API route to delete match stats for a specific player
+      await deleteMatchStatsByPlayerId(matchId, playerId);
+    
+      // Refetch the player data to update the UI if needed
+      if (selectedPlayer && selectedPlayer.id === playerId) {
+        const updatedPlayer = await fetchPlayerById(selectedPlayer.id);
+        setSelectedPlayer(updatedPlayer); // Update the state with the refetched player
+      }
+    } catch (error) {
+      console.error("Error deleting player's match stats:", error);
+    }
+  };
+
+  // Return early if no data
   if (!playerData || !Array.isArray(matchStats) || matchStats.length === 0) {
     return <div>No data available</div>;
   }
 
   // Create a map of match IDs to player stats for quick lookup
-  const playerMatchStatsMap = playerData.match_stats.reduce((map, stat) => {
-    map[stat.match_id] = stat;
-    return map;
-  }, {});
+  const playerMatchStatsMap = React.useMemo(() => {
+    return playerData.match_stats.reduce((map, stat) => {
+      map[stat.match_id] = stat;
+      return map;
+    }, {});
+  }, [playerData.match_stats]);
 
   return (
     <Box>
@@ -96,7 +116,7 @@ const PlayerStatsTable = ({ playerData, matchStats, deleteMatch, userRole }) => 
                       {(userRole === "admin" || userRole === "master_admin") && (
                         <Td>
                           <Button
-                            onClick={() => deleteMatch(matchStat.id)}
+                            onClick={() => handleDeleteMatchStats(matchStat.id, playerData.id)}
                             size="sm"
                             colorScheme="red"
                           >
@@ -117,6 +137,9 @@ const PlayerStatsTable = ({ playerData, matchStats, deleteMatch, userRole }) => 
 };
 
 export default PlayerStatsTable;
+
+
+
 
 
 
