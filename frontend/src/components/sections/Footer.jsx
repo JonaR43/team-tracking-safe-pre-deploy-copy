@@ -27,9 +27,16 @@ const Footer = () => {
     try {
       const response = await fetch('https://script.google.com/macros/s/AKfycbz_7ppiTQFRzDjMuuXFDxLrbcZvOjbQEUzgwvHw9QQCpQmrSyr32XOItewbFb4rko91/exec', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify(formData),
       });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       
       const result = await response.json();
       if (result.result === 'success') {
@@ -45,6 +52,7 @@ const Footer = () => {
       setIsSubmitting(false);
     }
   };
+  
   
 
   return (
