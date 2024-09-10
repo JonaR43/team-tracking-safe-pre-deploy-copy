@@ -27,24 +27,17 @@ const Footer = () => {
     try {
       const response = await fetch('https://script.google.com/macros/s/AKfycbz_7ppiTQFRzDjMuuXFDxLrbcZvOjbQEUzgwvHw9QQCpQmrSyr32XOItewbFb4rko91/exec', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      
+    
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok.');
       }
-      
+    
       const result = await response.json();
-      if (result.result === 'success') {
-        setMessage('Thank you for your submission!');
-        setFormData({ name: '', email: '', question: '' });
-      } else {
-        setMessage('Failed to submit. Please try again.');
-      }
+      setMessage('Thank you for your submission!');
+      setFormData({ name: '', email: '', question: '' });
     } catch (error) {
       console.error('Error submitting form:', error);
       setMessage('Failed to submit. Please try again.');
@@ -52,6 +45,7 @@ const Footer = () => {
       setIsSubmitting(false);
     }
   };
+  
   
   
 
