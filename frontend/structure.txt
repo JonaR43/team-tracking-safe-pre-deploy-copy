@@ -36,7 +36,7 @@ src/
 
 
 -------------------------------------------------------------------------------------------
-Steps to set up git connection on a new system, testing on new laptop
+Steps to set up git connection on a new system
 1. git init 
 2. git remote add origin https://github.com/JonaR43/team-tracking-safe-pre-deploy-copy.git
 3. git checkout -b new-branch-name

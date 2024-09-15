@@ -46,6 +46,8 @@ import {
   deleteMatchById,
   createMatch
 } from './services/matchService';
+import CalendarPage from "./pages/Calendar";
+import Availability from "./pages/Availability";
 
 export const API_URL = import.meta.env.VITE_API_URL || "/";
 
@@ -165,6 +167,8 @@ function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/about-us" element={<AboutUsPage />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/availability" element={<Availability />} />
               <Route path="/not-found" element={<NotFound />}/>
             </Routes>
           </Container>
